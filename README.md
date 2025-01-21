@@ -1,111 +1,102 @@
-# Financial Statement Analysis with gpt-4o
+# Financial Statement Analyst
 
+## Overview
+Financial Statement Analyst is a FastAPI-based project that provides a platform to Large Language Models (LLMs) like GPT-4 to analyze financial data and predict future earnings trends. The project integrates financial data processing with advanced AI-powered predictions to deliver actionable insights. The implementation is inspired by the working paper "Financial Statement Analysis with Large Language Models" from the Becker Friedman Institute ([Paper](https://bfi.uchicago.edu/wp-content/uploads/2024/05/BFI_WP_2024-65.pdf)).
 
-This repository implements financial statement analysis using Large Language Models (LLMs) like GPT-4 to analyze financial data and predict future earnings trends. The implementation is inspired by the working paper "Financial Statement Analysis with Large Language Models" from the Becker Friedman Institute ([Paper](https://bfi.uchicago.edu/wp-content/uploads/2024/05/BFI_WP_2024-65.pdf)).
 
 ---
 
 ## Features
-
-1. **Data Fetching:**
-   - Fetch balance sheet, income statement, and cash flow statement data from the Financial Modeling Prep API.
-   
-2. **Data Processing:**
-   - Standardizes and preprocesses financial data by normalizing column names and creating time-based indices (e.g., `t`, `t-1`).
-
-3. **Financial Ratio Calculation:**
-   - Computes key financial ratios for liquidity, leverage, profitability, and efficiency.
-
-4. **LLM Integration:**
-   - Converts processed financial data into textual format.
-   - Uses a Chain-of-Thought (CoT) prompting technique to guide the LLM in analyzing trends and predicting earnings changes.
-
-5. **End-to-End Pipeline:**
-   - Combines data fetching, processing, and LLM analysis into a streamlined process.
+- Fetch financial data for companies using a reliable API.
+- Process and clean financial data into standardized formats.
+- Calculate key financial ratios and metrics for balance sheets, income statements, and cash flow statements.
+- Leverage OpenAI's GPT models for financial analysis and predictions.
+- Generate and export financial analysis reports.
+- RESTful API endpoints for seamless integration with other tools.
 
 ---
-
+## Technologies Used
+- **FastAPI**: For building the RESTful API.
+- **Python**: Core programming language.
+- **Pandas**: Data processing and manipulation.
+- **Requests**: Fetching data from external APIs.
+- **OpenAI API**: Integrating AI for financial analysis.
+- **cURL**: Testing API endpoints.
+---
 ## Installation
 
+### Prerequisites
+1. Python 3.8+
+2. Git
+3. OpenAI API Key
+
+### Steps
 1. Clone the repository:
+    ```bash
+    git clone https://github.com/utkarshx27/llm-financial-statement-analyst.git
+    cd llm-financial-statement-analyst
+    ```
 
-   ```bash
-   git clone https://github.com/<your-username>/financial-statement-analysis-llm.git
-   cd financial-statement-analysis-llm
-   ```
+2. Create a virtual environment:
+    ```bash
+    python -m venv venv
+    source venv/bin/activate # On Windows: venv\Scripts\activate
+    ```
 
-2. Install dependencies:
+3. Install dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-   ```bash
-   import requests
-   import pandas as pd
-   import os
-   from openai import OpenAI
-   ```
-
-3. Set up API keys:
-   - Financial Modeling Prep API Key: Obtain from [Financial Modeling Prep](https://site.financialmodelingprep.com/developer/docs).
-   - OpenAI API Key: Obtain from [OpenAI](https://platform.openai.com/).
-
-   Add your API keys to a secure storage method or hardcode them in the script (not recommended).
+4. Set environment variables for OpenAI API Key:
+    ```bash
+    export OPENAI_API_KEY="your_openai_api_key"
+    ```
 
 ---
 
 ## Usage
 
-### 1. Data Fetching
-Fetch financial data for a given ticker:
+### Running the API
+1. Start the FastAPI server:
+    ```bash
+    fastapi dev main.py
+    uvicorn main:app --reload
+    ```
 
-```python
-balance_sheet = get_financial_data('AAPL', 'balance-sheet-statement')
-income_statement = get_financial_data('AAPL', 'income-statement')
-cash_flow = get_financial_data('AAPL', 'cash-flow-statement')
+2. The API will be available at [http://127.0.0.1:8000](http://127.0.0.1:8000).
+
+
+### API Endpoints
+
+#### `POST /fetch-process-analyze`
+Fetch, process, and analyze financial data for a given ticker.
+
+**Request Body:**
+```json
+{
+  "ticker": "AAPL",
+  "data_type": "balance-sheet-statement"
+}
 ```
 
-### 2. Data Preprocessing
-Standardize the financial data:
-
-```python
-balance_sheet_processed = std_financial_data(balance_sheet)
-income_statement_processed = std_financial_data(income_statement)
-cash_flow_processed = std_financial_data(cash_flow)
+**Response:**
+```json
+{
+  "analysis": "AI-generated financial insights",
+  "log_probs": "Log probabilities from OpenAI API"
+}
 ```
 
-### 3. Ratio Calculation
-
-```python
-balance_sheet_with_ratios = calculate_financial_ratios(balance_sheet_processed)
-income_statement_with_ratios = calculate_income_statement_ratios(income_statement_processed)
-cash_flow_with_metrics = calculate_cash_flow_metrics(cash_flow_processed, income_statement_processed, balance_sheet_processed)
-```
-
-### 4. LLM Analysis
-Prepare and analyze the financial data using the LLM:
-
-```python
-balance_sheet_string = convert_to_string(balance_sheet_with_ratios)
-income_statement_string = convert_to_string(income_statement_with_ratios)
-cash_flow_string = convert_to_string(cash_flow_with_metrics)
-
-result = financial_analysis_cot(
-    model='gpt-4',
-    balance_sheet=balance_sheet_string,
-    income_statement=income_statement_string,
-    cash_flow=cash_flow_string
-)
-
-print("Analysis:", result["analysis"])
+### Testing the API with `cURL`
+```bash
+curl -X POST "http://127.0.0.1:8000/fetch-process-analyze" ^
+-H "Content-Type: application/json" ^
+-d "{\"ticker\": \"AAPL\", \"data_type\": \"balance-sheet-statement\"}"
 ```
 
 ---
 
-## File Structure
-
-- `main.py`: Contains the primary code for data fetching, processing, and analysis.
-- `requirements.txt`: List of dependencies.
-- `README.md`: This file.
-
----
 
 ## Example Output
 
