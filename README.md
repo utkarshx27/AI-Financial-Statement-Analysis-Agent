@@ -11,6 +11,11 @@ Financial Statement Analyst is a FastAPI-based project that provides a platform 
 - Process and clean financial data into standardized formats.
 - Calculate key financial ratios and metrics for balance sheets, income statements, and cash flow statements.
 - Leverage OpenAI's GPT models for financial analysis and predictions.
+- Chain-of-Thought (CoT) Prompt: Guide the model step-by-step:
+    - Identify trends in financial line items.
+    - Compute key financial ratios (e.g., profitability, liquidity, leverage).
+    - Generate a narrative interpretation of the ratios.
+    - Predict whether earnings will increase or decrease in the next period.
 - Generate and export financial analysis reports.
 - RESTful API endpoints for seamless integration with other tools.
 
