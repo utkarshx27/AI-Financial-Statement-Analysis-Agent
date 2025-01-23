@@ -18,6 +18,141 @@ Financial Statement Analyst is a FastAPI-based project that provides a platform 
     - Predict whether earnings will increase or decrease in the next period.
 - Generate and export financial analysis reports.
 - RESTful API endpoints for seamless integration with other tools.
+---
+# Financial Ratios Overview
+
+## 1. Balance Sheet Ratios (`calculate_financial_ratios`)
+These ratios assess liquidity and leverage using balance sheet data:
+
+### Current Ratio
+**Formula:**
+```
+total_current_assets / total_current_liabilities
+```
+**Purpose:** Measures short-term liquidity (ability to cover current liabilities with current assets).
+
+### Quick Ratio
+**Formula:**
+```
+(cash + short_term_investments + receivables) / total_current_liabilities
+```
+**Purpose:** A stricter liquidity metric excluding inventory.
+
+### Debt-to-Equity Ratio
+**Formula:**
+```
+total_liabilities / total_stockholders_equity
+```
+**Purpose:** Indicates leverage by comparing debt to shareholders' equity.
+
+### Debt Ratio
+**Formula:**
+```
+total_liabilities / total_assets
+```
+**Purpose:** Shows the proportion of assets financed by debt.
+
+### Net Debt-to-Equity Ratio
+**Formula:**
+```
+(total_debt - cash) / total_stockholders_equity
+```
+**Purpose:** Adjusts debt for cash holdings to reflect true leverage.
+
+### Equity Ratio
+**Formula:**
+```
+total_stockholders_equity / total_assets
+```
+**Purpose:** Highlights equity funding proportion in total assets.
+
+---
+
+## 2. Income Statement Ratios (`calculate_income_statement_ratios`)
+These ratios evaluate profitability and earnings performance:
+
+### Margins
+#### Gross Profit Margin
+**Formula:**
+```
+gross_profit / revenue
+```
+#### Operating Profit Margin
+**Formula:**
+```
+operating_income / revenue
+```
+#### Net Profit Margin
+**Formula:**
+```
+net_income / revenue
+```
+#### EBITDA Margin
+**Formula:**
+```
+ebitda / revenue
+```
+**Purpose:** All margins measure profitability at different stages of operations.
+
+### Earnings Per Share (EPS)
+#### Basic EPS
+**Formula:**
+```
+net_income / weighted_average_shs_out
+```
+#### Diluted EPS
+**Formula:**
+```
+net_income / weighted_average_shs_out_dil
+```
+**Purpose:** Reflects profitability per share, accounting for potential dilution.
+
+---
+
+## 3. Cash Flow Metrics (`calculate_cash_flow_metrics`)
+These metrics analyze cash generation and usage:
+
+### Operating Cash Flow Ratio
+**Formula:**
+```
+operating_cash_flow / total_liabilities
+```
+**Purpose:** Assesses ability to cover liabilities with operating cash flow.
+
+### Cash Flow Margin
+**Formula:**
+```
+operating_cash_flow / revenue
+```
+**Purpose:** Measures cash efficiency relative to revenue.
+
+### Reinvestment Ratio
+**Formula:**
+```
+capital_expenditures / operating_cash_flow
+```
+**Purpose:** Shows reinvestment intensity in fixed assets.
+
+### Dividend Payout Ratio
+**Formula:**
+```
+dividends_paid / free_cash_flow
+```
+**Purpose:** Indicates dividends paid as a percentage of free cash flow.
+
+### FCF-to-Revenue
+**Formula:**
+```
+free_cash_flow / revenue
+```
+**Purpose:** Free cash flow generated per revenue unit.
+
+### Cash Conversion Efficiency
+**Formula:**
+```
+operating_cash_flow / net_income
+```
+**Purpose:** Measures how efficiently net income converts to cash.
 
 ---
 ## Technologies Used
