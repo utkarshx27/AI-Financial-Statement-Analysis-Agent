@@ -1,7 +1,7 @@
 # Financial Statement Analyst
 
 ## Overview
-Financial Statement Analyst is a FastAPI-based project that provides a platform to Large Language Models (LLMs) like GPT-4 to analyze financial data and predict future earnings trends. The project integrates financial data processing with advanced AI-powered predictions to deliver actionable insights. The implementation is inspired by the working paper "Financial Statement Analysis with Large Language Models" from the Becker Friedman Institute ([Paper](https://bfi.uchicago.edu/wp-content/uploads/2024/05/BFI_WP_2024-65.pdf)).
+Built an AI-powered platform leveraging OpenAI's GPT models to analyze financial data and predict future earnings trends. Designed and implemented advanced Chain-of-Thought (CoT) prompting techniques for identifying financial trends, computing key ratios, and generating predictive narratives. Integrated external financial data APIs for automated data fetching and processing, enabling the generation of detailed financial analysis reports. Developed an interactive web-based UI to showcase AI-driven insights and predictions, demonstrating expertise in applying cutting-edge AI technologies to financial statement analysis and decision-making. The implementation is inspired by the working paper "Financial Statement Analysis with Large Language Models" from the Becker Friedman Institute ([Paper](https://bfi.uchicago.edu/wp-content/uploads/2024/05/BFI_WP_2024-65.pdf)).
 
 
 ---
