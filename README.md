@@ -7,7 +7,7 @@ Financial Statement Analyst is a FastAPI-based project that provides a platform 
 ---
 
 ## Features
-- Fetch financial data for companies using a reliable API.
+- Fetch financial data(like annual balance sheet, income statement and cash flow) for companies using a reliable API.
 - Process and clean financial data into standardized formats.
 - Calculate key financial ratios and metrics for balance sheets, income statements, and cash flow statements.
 - Leverage OpenAI's GPT models for financial analysis and predictions.
