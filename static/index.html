@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Financial Analysis</title>
+    <style>
+        :root {
+            --primary-color: #2962ff;
+            --background-color: #f5f7fb;
+            --card-background: #ffffff;
+            --text-color: #333333;
+            --border-color: #e0e0e0;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #3d5afe;
+            --background-color: #1a1a1a;
+            --card-background: #2d2d2d;
+            --text-color: #ffffff;
+            --border-color: #404040;
+            --shadow-color: rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: var(--card-background);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .control-panel {
+            background: var(--card-background);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+        select {
+            padding: 0.8rem 1.2rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--card-background);
+            color: var(--text-color);
+            min-width: 200px;
+        }
+
+        button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        #result {
+            background: var(--card-background);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            white-space: pre-wrap;
+            line-height: 1.6;
+            min-height: 150px;
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error {
+            color: #d32f2f;
+            background: #ffebee;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .analysis-content ul {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .analysis-content li {
+            margin-bottom: 0.25rem;
+            line-height: 1.5;
+        }
+
+        .analysis-content h3 {
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .analysis-content strong {
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 600px) {
+            .control-panel {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            select {
+                width: 100%;
+            }
+            
+            button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path id="theme-icon" d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1-8.313-12.454z"/>
+        </svg>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Financial Analysis Dashboard</h1>
+            <p>Get AI-powered insights into company financials</p>
+        </div>
+
+        <div class="control-panel">
+            <select id="tickerSelect">
+                <option value="AAPL">Apple (AAPL)</option>
+                <option value="MSFT">Microsoft (MSFT)</option>
+                <option value="GOOG">Google (GOOG)</option>
+            </select>
+            <button onclick="fetchAnalysis()">
+                <span class="spinner" style="display: none;"></span>
+                Generate Analysis
+            </button>
+        </div>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function formatAnalysisText(text) {
+            const lines = text.split('\n');
+            let html = [];
+            let inList = false;
+
+            lines.forEach(line => {
+                line = line.trim();
+                if (line.startsWith('### ')) {
+                    if (inList) {
+                        html.push('</ul>');
+                        inList = false;
+                    }
+                    html.push(`<h3>${line.substring(4)}</h3>`);
+                } else if (line.startsWith('- **')) {
+                    if (!inList) {
+                        html.push('<ul>');
+                        inList = true;
+                    }
+                    const boldEnd = line.indexOf('**: ');
+                    const content = line.replace('- **', '');
+                    if (boldEnd > -1) {
+                        const boldText = content.substring(0, boldEnd - 3);
+                        const rest = content.substring(boldEnd - 2);
+                        html.push(`<li><strong>${boldText}</strong>${rest}</li>`);
+                    } else {
+                        html.push(`<li><strong>${content.replace('**', '')}</strong></li>`);
+                    }
+                } else {
+                    if (inList) {
+                        html.push('</ul>');
+                        inList = false;
+                    }
+                    if (line) {
+                        html.push(`<p>${line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>`);
+                    }
+                }
+            });
+
+            if (inList) html.push('</ul>');
+            return html.join('');
+        }
+
+        function setTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            updateThemeIcon(theme);
+        }
+
+        function toggleTheme() {
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        }
+
+        function updateThemeIcon(theme) {
+            const iconPath = document.getElementById('theme-icon');
+            iconPath.setAttribute('d', theme === 'dark' 
+                ? 'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707'
+                : 'M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1-8.313-12.454z');
+        }
+
+        // Initialize theme
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        setTheme(savedTheme);
+
+        async function fetchAnalysis() {
+            const ticker = document.getElementById('tickerSelect').value;
+            const resultDiv = document.getElementById('result');
+            const button = document.querySelector('button');
+            const spinner = button.querySelector('.spinner');
+
+            button.disabled = true;
+            spinner.style.display = 'block';
+            resultDiv.innerHTML = '<div class="loading-text">Analyzing financial data...<br><small>This may take a moment</small></div>';
+
+            try {
+                const response = await fetch('/fetch-process-analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ticker: ticker })
+                });
+
+                if (!response.ok) throw new Error(await response.text());
+                const data = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <div class="analysis-result">
+                        <h3>Analysis for ${ticker}:</h3>
+                        <div class="analysis-content">${formatAnalysisText(data.analysis)}</div>
+                    </div>
+                `;
+
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+            } finally {
+                button.disabled = false;
+                spinner.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
