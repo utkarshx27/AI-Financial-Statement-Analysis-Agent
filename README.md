@@ -222,7 +222,7 @@ The project now features an interactive web-based UI for financial analysis:
 ## Contribution Guidelines
 
 1. Fork the repository and create a new branch for your feature or bug fix.
-2. Submit a pull request with a clear description of your changes.
+2. Submit a pull request with a clear description of your changes
 3. Ensure your code adheres to PEP 8 standards.
 
 ---
